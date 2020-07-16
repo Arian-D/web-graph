@@ -1,0 +1,11 @@
+#+TITLE: Web graph
+This is a tool to create graphs from the hyperlinks, starting from a
+website and performing BFS for more connections.
+* Usage
+Using nix,
+#+BEGIN_SRC shell
+nix-shell --pure --run "python main.py"
+#+END_SRC
+* Todo [0/3]
+- [ ] Add dot graphing (graphviz
+- [ ] Add dfs
