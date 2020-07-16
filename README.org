@@ -2,10 +2,14 @@
 This is a tool to create graphs from the hyperlinks, starting from a
 website and performing BFS for more connections.
 * Usage
-Using nix,
+Using ~nix-shell --pure~
 #+BEGIN_SRC shell
-nix-shell --pure --run "python main.py"
+python main.py http://github.com > github.gv
+dot -Tsvg -ogithub.svg github.gv
 #+END_SRC
-* Todo [0/3]
-- [ ] Add dot graphing (graphviz
+* Todo [0/5]
 - [ ] Add dfs
+- [ ] Add hyperlinks to dot
+- [ ] Add coloring
+- [ ] Add command line arguments
+- [ ] Add auto compiling and opening svg in the browser

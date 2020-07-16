@@ -1,21 +1,21 @@
 from bs4 import BeautifulSoup
 from requests import get
+from sys import argv
 
-LIMIT = 10
+LIMIT = 100
 
 def search(url: str):
     queue = []
     edges = set()
     discovered = { url }
     queue.append(url) # enqueue
-    soup = BeautifulSoup(get(url).text, "html.parser")
     while queue != []:
         try:
             u = queue.pop(0)
             v = BeautifulSoup(get(u).text, "html.parser") # dequeue
         except:
             return edges
-        if len(edges) > 10000:
+        if len(edges) > LIMIT:
             return edges
         for link in v.findAll('a'):
             if "href" in link.attrs and link["href"] not in discovered:
@@ -31,11 +31,23 @@ def search(url: str):
                 edges.add((u, href))
     return edges
 
+def clean_url(url: str):
+    url = url.replace("http://", "").replace("https://", "")
+    return '/'.join(url.split('/')[:2])
 
 def main():
-    for src, dest in search("https://gnu.org"):
-        print(f"{src}: {dest}")
-
+    print("digraph {")
+    print("\toverlap = false;")
+    print("\tsplines = true;")
+    for src, dest in search(argv[1]):
+        print(
+            '\t"{}" -> "{}";'.format(
+                clean_url(src),
+                clean_url(dest)
+            )
+        )
+              
+    print("}")
 
 
 if __name__ == "__main__":
